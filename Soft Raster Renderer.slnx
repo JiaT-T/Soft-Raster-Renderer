@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Soft Raster Renderer.vcxproj" Id="150b41a6-513e-4600-abce-df9557ec5d03" />
+</Solution>
