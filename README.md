@@ -31,7 +31,11 @@ A CPU-based software rasterizer following the Tiny Renderer workflow, with a sma
 
 ## Sample Output
 
-The sample output is stored as `framebuffer.tga`. GitHub does not render TGA inline, so use the file link to download and view it locally.
+Preview (PNG):
+
+![Sample Output](framebuffer.png)
+
+The original TGA output is also kept for reference:
 
 - `framebuffer.tga`
 
