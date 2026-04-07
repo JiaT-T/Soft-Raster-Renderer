@@ -92,9 +92,9 @@ struct IShader
 
 struct ConstantBuffer
 {
-     Vector3    eye{ -1.0f, 0.0f, 1.0f };  // camera position
-     Vector3 center{ 0.0f, 0.0f, 0.0f }; // camera direction
-     Vector3     up{ 0.0f, 1.0f, 0.0f };   // camera up vector
+     Vector3    eye{ -1.0f, 0.0f, 1.0f };    // camera position
+     Vector3 center{ 0.0f, 0.0f, 0.0f };     // camera direction
+     Vector3     up{ 0.0f, 1.0f, 0.0f };     // camera up vector
      
      Vector3 lightDir{ 0.5f, 2.5f, 2.0f };   // light direction
      Vector3  lightUp{ 0.0f, 1.0f, 0.0f };   // light up vector
