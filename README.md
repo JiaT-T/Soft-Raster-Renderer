@@ -29,6 +29,12 @@ A CPU-based software rasterizer following the Tiny Renderer workflow, with a sma
 3. Run SSAO sampling on the final z-buffer and modulate the framebuffer.
 4. Write the image to `framebuffer.tga`.
 
+## Sample Output
+
+The sample output is stored as `framebuffer.tga`. GitHub does not render TGA inline, so use the file link to download and view it locally.
+
+- `framebuffer.tga`
+
 ## Build Notes
 
 This is a Visual Studio C++ project. Open `Soft Raster Renderer.vcxproj` and build in VS (x64).
