@@ -64,6 +64,7 @@ public :
 		// 清空旧数据
 		vertices_.clear();
 		uv_.clear();
+		normal_.clear();
 		render_buffer_.clear();
 
 		vertices_.reserve(1000);
@@ -136,7 +137,9 @@ public :
 				vnIdx = std::stoi(indexStr);
 			}
 
-			FinalVertex vertex;
+			// Reject a face with an invalid position instead of reading uninitialized data.
+			if (vIdx <= 0 || static_cast<size_t>(vIdx) > vertices_.size()) return;
+			FinalVertex vertex{};
 			//获取 Position
 			if (vIdx > 0 && vIdx <= vertices_.size()) {
 				vertex.x = vertices_[vIdx - 1].x;
