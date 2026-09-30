@@ -6,6 +6,7 @@
 *.lo
 *.o
 *.obj
+!/Models/**/*.obj
 
 # Precompiled Headers
 *.gch
@@ -39,3 +40,13 @@
 
 # debug information files
 *.dwo
+
+# Local build and IDE output
+build/
+out/
+.vs/
+x64/
+Debug/
+Release/
+*.vcxproj.user
+CMakeUserPresets.json

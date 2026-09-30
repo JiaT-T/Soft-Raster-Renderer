@@ -33,6 +33,13 @@ int main(int argc, char** argv)
     if (floor.Load("Models/floor/", "floor"))
         sceneObjects.push_back(std::move(floor));
 
+    if (sceneObjects.empty())
+    {
+        std::cerr << "No scene models loaded. Run from the repository root and provide the "
+                     "OBJ files documented in README.md.\n";
+        return EXIT_FAILURE;
+    }
+
     std::fill(zbuffer.begin(), zbuffer.end(), -1000.0);
 
     for (const auto& obj : sceneObjects)
@@ -77,9 +84,6 @@ int main(int argc, char** argv)
 	//随机值生成器，用于SSAO采样
     constexpr double ao_radius = .1;  // ssao ball radius in normalized device coordinates
     constexpr int nsamples = 128;     // number of samples in the ball
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist(-ao_radius, ao_radius);
     auto smoothstep = [](double edge0, double edge1, double x)
         {         // smoothstep returns 0 if the input is less than the left edge,
             double t = std::clamp((x - edge0) / (edge1 - edge0), 0., 1.);  // 1 if the input is greater than the right edge,
@@ -90,6 +94,9 @@ int main(int argc, char** argv)
     //SSAO采样
 	for (int y = 0; y < height; ++y)
     {
+        // Each row owns its RNG; results do not depend on OpenMP scheduling.
+        std::mt19937 gen(static_cast<std::mt19937::result_type>(y));
+        std::uniform_real_distribution<double> dist(-ao_radius, ao_radius);
         for (int x = 0; x < width; ++x)
         {
             double z = zbuffer[x + y * width];
@@ -106,13 +113,13 @@ int main(int argc, char** argv)
                 voters++;
                 vote += d > samplePos.z;
             }
-            double ssao = smoothstep(0, 1, 1 - vote / voters * .4);
+            double ssao = voters > 0 ? smoothstep(0, 1, 1 - vote / voters * .4) : 1.0;
             TGAColor c = framebuffer.get(x, y);
             //framebuffer.set(x, y, {static_cast<unsigned char>(ssao * 255), static_cast<unsigned char>(ssao * 255), static_cast<unsigned char>(ssao * 255), c[3]});
             framebuffer.set(x, y, { static_cast<unsigned char>(c[0] * ssao), static_cast<unsigned char>(c[1] * ssao), static_cast<unsigned char>(c[2] * ssao), c[3] });
         }
     }
 
-    framebuffer.write_tga_file("framebuffer.tga");
-    return 0;
+    const char* outputPath = argc > 1 ? argv[1] : "framebuffer.tga";
+    return framebuffer.write_tga_file(outputPath) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
